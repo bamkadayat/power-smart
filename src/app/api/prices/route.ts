@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import {
-  fetchUpstreamPrices,
-  PricesUnavailableError,
-} from "@/features/prices";
+import { getPricesForArea, PricesUnavailableError } from "@/features/prices";
 import { isPriceArea } from "@/shared/lib/areas";
 import { formatOsloDate } from "@/shared/lib/date";
 
@@ -42,12 +39,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const prices = await fetchUpstreamPrices(areaParam, year, monthDay);
-    return NextResponse.json({
-      area: areaParam,
-      date: `${year}-${monthDay}`,
-      prices,
-    });
+    const { prices, source } = await getPricesForArea(areaParam, year, monthDay);
+    return NextResponse.json(
+      { area: areaParam, date: `${year}-${monthDay}`, prices },
+      { headers: { "X-Cache": source } },
+    );
   } catch (err) {
     if (err instanceof PricesUnavailableError) {
       return NextResponse.json(

@@ -1,16 +1,20 @@
-import type { ElectricityPrice } from "../types";
+export type PriceLike = {
+  NOK_per_kWh: number;
+  time_start: string;
+  time_end: string;
+};
 
-export type PriceWindow = {
+export type CheapestWindow<T extends PriceLike> = {
   start: string;
   end: string;
   averagePrice: number;
-  hours: ElectricityPrice[];
+  hours: T[];
 };
 
-export const getCheapestContinuousWindow = (
-  prices: ElectricityPrice[],
+export const findCheapestWindow = <T extends PriceLike>(
+  prices: T[],
   durationHours: number,
-): PriceWindow | null => {
+): CheapestWindow<T> | null => {
   if (durationHours <= 0 || prices.length < durationHours) return null;
 
   let bestStart = 0;
