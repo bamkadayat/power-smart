@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useGeolocation, type GeolocationState } from "../client/useGeolocation";
 import { useSelectedArea } from "../client/useSelectedArea";
 import { AREA_META } from "../lib/areaMeta";
@@ -30,6 +32,23 @@ const buildStatusMessage = (state: GeolocationState): string | null => {
 export const AreaPicker = () => {
   const { area, setArea } = useSelectedArea();
   const { state: geoState, request: requestLocation } = useGeolocation();
+
+  // Auto-request location on first visit when no area is saved. Saved areas
+  // always win; if the user denies, we fall through to manual selection and
+  // never retry automatically.
+  useEffect(() => {
+    if (area !== null) return;
+    if (geoState.status !== "idle") return;
+
+    let cancelled = false;
+    void requestLocation().then((detected) => {
+      if (!cancelled && detected) setArea(detected);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [area, geoState.status, requestLocation, setArea]);
 
   const handleLocate = async () => {
     const detected = await requestLocation();

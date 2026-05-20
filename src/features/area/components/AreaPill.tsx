@@ -1,9 +1,12 @@
 "use client";
 
+import { cn } from "@/shared/lib/cn";
+
 import { useSelectedArea } from "../client/useSelectedArea";
 
 export const AreaPill = () => {
   const { area } = useSelectedArea();
+  const active = area !== null;
 
   return (
     <a
@@ -12,7 +15,10 @@ export const AreaPill = () => {
     >
       <span
         aria-hidden="true"
-        className="h-1.5 w-1.5 rounded-full bg-muted-foreground"
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          active ? "bg-accent" : "bg-muted-foreground",
+        )}
       />
       {area ?? "Pick area"}
     </a>
