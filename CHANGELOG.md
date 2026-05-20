@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/bamkadayat/power-smart/compare/v1.1.0...v1.2.0) (2026-05-20)
+
+
+### Features
+
+* add area picker with geolocation and prices wiring ([1fc9e77](https://github.com/bamkadayat/power-smart/commit/1fc9e77eca155f6f2823eb18de93dae51903e0f5))
+* add caching and area-based price retrieval functionality with corresponding tests ([8cff3ca](https://github.com/bamkadayat/power-smart/commit/8cff3ca3af4721d53e8cb7d1171c2f3df5fb4415))
+* implement area detection and storage functionality with corresponding tests ([6920eac](https://github.com/bamkadayat/power-smart/commit/6920eac64dcd13ce2c33c713ad53c1d48e61e707))
+
 # [1.1.0](https://github.com/bamkadayat/power-smart/compare/v1.0.0...v1.1.0) (2026-05-20)
 
 
