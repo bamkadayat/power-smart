@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { Footer } from "@/shared/components/Footer";
-import { Header } from "@/shared/components/Header";
+
+import { Header } from "./_components/Header";
 
 import "./globals.css";
 
@@ -23,13 +24,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 sm:py-12">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

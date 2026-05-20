@@ -11,50 +11,63 @@ type Props = {
 
 type BarKind = "cheap" | "expensive" | "normal";
 
-const SYMBOL: Record<BarKind, string> = {
-  cheap: "↓",
-  expensive: "↑",
-  normal: "",
-};
-
 const BAR_BG: Record<BarKind, string> = {
   cheap: "bg-chart-cheap",
   expensive: "bg-chart-expensive",
   normal: "bg-chart-normal",
 };
 
+const KIND_LABEL: Record<BarKind, string> = {
+  cheap: "cheap",
+  expensive: "expensive",
+  normal: "normal",
+};
+
+const quartile = (sorted: number[], q: number): number => {
+  const index = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.floor(sorted.length * q)),
+  );
+  return sorted[index];
+};
+
 export const PriceChart = ({ prices, now = new Date() }: Props) => {
   if (prices.length === 0) return null;
 
-  const max = Math.max(...prices.map((p) => p.NOK_per_kWh));
-  const minPrice = Math.min(...prices.map((p) => p.NOK_per_kWh));
-  const maxPrice = max;
+  const values = prices.map((p) => p.NOK_per_kWh);
+  const max = Math.max(...values);
+  const sorted = [...values].sort((a, b) => a - b);
+  const lowCut = quartile(sorted, 0.25);
+  const highCut = quartile(sorted, 0.75);
+  const absMin = sorted[0];
+  const absMax = sorted[sorted.length - 1];
   const nowMs = now.getTime();
 
   return (
-    <figure aria-label="Hourly electricity prices for today">
+    <figure aria-label="Hourly electricity prices">
       <figcaption className="sr-only">
-        Bar chart of hourly spot prices. Cheapest hour marked with a down arrow,
-        most expensive with an up arrow.
+        Bar chart of hourly spot prices. Cheap hours are highlighted in mint,
+        peak hours in dark navy.
       </figcaption>
-      <div className="flex h-48 items-end gap-[2px] sm:gap-1" role="list">
+      <div className="flex h-40 items-end gap-[2px] sm:gap-1" role="list">
         {prices.map((p) => {
-          const isCheapest = p.NOK_per_kWh === minPrice;
-          const isExpensive = p.NOK_per_kWh === maxPrice;
-          const kind: BarKind = isCheapest
-            ? "cheap"
-            : isExpensive
-              ? "expensive"
-              : "normal";
+          const kind: BarKind =
+            p.NOK_per_kWh <= lowCut
+              ? "cheap"
+              : p.NOK_per_kWh >= highCut
+                ? "expensive"
+                : "normal";
 
+          const isAbsoluteCheapest = p.NOK_per_kWh === absMin;
+          const isAbsolutePeak = p.NOK_per_kWh === absMax;
           const start = new Date(p.time_start).getTime();
           const end = new Date(p.time_end).getTime();
           const isCurrent = start <= nowMs && nowMs < end;
 
           const hour = formatHourFromIso(p.time_start);
-          const label = `${hour}, ${formatPrice(p.NOK_per_kWh)}${
-            isCheapest ? ", cheapest hour" : ""
-          }${isExpensive ? ", most expensive hour" : ""}${
+          const label = `${hour}, ${formatPrice(p.NOK_per_kWh)}, ${KIND_LABEL[kind]}${
+            isAbsoluteCheapest ? ", cheapest hour" : ""
+          }${isAbsolutePeak ? ", peak hour" : ""}${
             isCurrent ? ", current hour" : ""
           }`;
 
@@ -67,9 +80,9 @@ export const PriceChart = ({ prices, now = new Date() }: Props) => {
             >
               <span
                 aria-hidden="true"
-                className="text-xs font-semibold leading-none"
+                className="text-xs font-semibold leading-none text-muted-foreground"
               >
-                {SYMBOL[kind]}
+                {isAbsoluteCheapest ? "↓" : isAbsolutePeak ? "↑" : ""}
               </span>
               <div
                 className={cn(

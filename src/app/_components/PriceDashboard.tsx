@@ -24,7 +24,9 @@ export const PriceDashboard = () => {
 
   return (
     <div className="space-y-10">
-      <AreaPicker />
+      <div id="area" className="scroll-mt-20">
+        <AreaPicker />
+      </div>
 
       <div role="status" aria-live="polite" className="sr-only">
         {today.status === "loading" && "Loading prices."}
@@ -43,7 +45,11 @@ export const PriceDashboard = () => {
 
       {area && (showSkeleton || showData) && (
         <>
-          <section aria-labelledby="today-heading" className="space-y-4">
+          <section
+            id="today"
+            aria-labelledby="today-heading"
+            className="space-y-4 scroll-mt-20"
+          >
             <h2 id="today-heading" className="text-xl font-semibold">
               Today — {AREA_META[area].code} {AREA_META[area].city}
             </h2>
@@ -71,15 +77,11 @@ export const PriceDashboard = () => {
             )}
           </section>
 
-          <section aria-labelledby="tomorrow-heading" className="space-y-4">
-            <h2 id="tomorrow-heading" className="text-xl font-semibold">
-              Tomorrow
-            </h2>
-            {showData ? (
-              <TomorrowSection area={area} />
-            ) : (
-              <PriceSummarySkeleton />
-            )}
+          <section id="tomorrow" className="scroll-mt-20">
+            <TomorrowSection
+              area={area}
+              todayPrices={showData ? today.prices : undefined}
+            />
           </section>
         </>
       )}

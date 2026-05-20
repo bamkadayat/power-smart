@@ -1,8 +1,7 @@
+import { serverEnv } from "@/shared/config/env";
 import type { PriceArea } from "@/shared/lib/areas";
 
 import type { ElectricityPrice } from "../types";
-
-const UPSTREAM_BASE = "https://www.hvakosterstrommen.no/api/v1/prices";
 
 export class PricesUnavailableError extends Error {
   constructor(area: PriceArea, date: string) {
@@ -16,7 +15,7 @@ export const fetchUpstreamPrices = async (
   year: string,
   monthDay: string,
 ): Promise<ElectricityPrice[]> => {
-  const url = `${UPSTREAM_BASE}/${year}/${monthDay}_${area}.json`;
+  const url = `${serverEnv.upstreamPricesUrl()}/${year}/${monthDay}_${area}.json`;
   const res = await fetch(url, {
     next: { revalidate: 3600 },
   });
