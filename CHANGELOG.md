@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/bamkadayat/power-smart/compare/v1.0.0...v1.1.0) (2026-05-20)
+
+
+### Features
+
+* remove unused SVG files and add area and price features with corresponding tests ([0c32a19](https://github.com/bamkadayat/power-smart/commit/0c32a1991180bc702d74e0e13671da5078d3fc6f))
+* update styles and variables in globals.css and button.tsx for improved theming ([44b0bce](https://github.com/bamkadayat/power-smart/commit/44b0bce64743df65cd1a06339e5bf33533bea96c))
+
 # 1.0.0 (2026-05-20)
 
 
