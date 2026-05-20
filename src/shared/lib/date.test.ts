@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { formatOsloDate, osloDateString } from "./date";
+import {
+  formatHourFromIso,
+  formatOsloDate,
+  osloDateString,
+  osloTomorrowDateString,
+} from "./date";
 
 describe("formatOsloDate", () => {
   it("returns YYYY/MM/DD parts for a known instant in Europe/Oslo time", () => {
-    // 2026-05-20T22:00:00Z = 2026-05-21 00:00 in Oslo (CEST, +02:00)
     const parts = formatOsloDate(new Date("2026-05-20T22:00:00Z"));
     expect(parts).toEqual({ year: "2026", month: "05", day: "21" });
   });
@@ -19,5 +23,26 @@ describe("formatOsloDate", () => {
 describe("osloDateString", () => {
   it("formats as YYYY-MM-DD", () => {
     expect(osloDateString(new Date("2026-05-20T12:00:00Z"))).toBe("2026-05-20");
+  });
+});
+
+describe("osloTomorrowDateString", () => {
+  it("returns the next calendar day in Oslo", () => {
+    expect(osloTomorrowDateString(new Date("2026-05-20T12:00:00Z"))).toBe(
+      "2026-05-21",
+    );
+  });
+
+  it("crosses month boundaries", () => {
+    expect(osloTomorrowDateString(new Date("2026-05-31T12:00:00Z"))).toBe(
+      "2026-06-01",
+    );
+  });
+});
+
+describe("formatHourFromIso", () => {
+  it("extracts HH:mm from a full ISO timestamp", () => {
+    expect(formatHourFromIso("2026-05-20T14:00:00+02:00")).toBe("14:00");
+    expect(formatHourFromIso("2026-05-20T00:00:00+02:00")).toBe("00:00");
   });
 });
