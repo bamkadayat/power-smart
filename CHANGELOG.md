@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/bamkadayat/power-smart/compare/v1.4.0...v1.5.0) (2026-05-20)
+
+
+### Features
+
+* keep last prices visible during refetch ([eec83e8](https://github.com/bamkadayat/power-smart/commit/eec83e884cca950173ad8e50b2305f48cd5ee1e3))
+
 # [1.4.0](https://github.com/bamkadayat/power-smart/compare/v1.3.0...v1.4.0) (2026-05-20)
 
 
