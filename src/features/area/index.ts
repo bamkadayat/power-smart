@@ -5,4 +5,7 @@ export {
   saveSelectedArea,
   clearSelectedArea,
 } from "./lib/areaStorage";
+export { useSelectedArea } from "./client/useSelectedArea";
+export { useGeolocation, type GeolocationState } from "./client/useGeolocation";
+export { AreaPicker } from "./components/AreaPicker";
 export type { AreaMeta } from "./types";
