@@ -49,7 +49,7 @@ export const AreaPicker = () => {
         <AreaSelector
           value={area}
           onChange={setArea}
-          className="w-full sm:max-w-sm"
+          className="w-full sm:flex-1"
         />
       </div>
       <p
