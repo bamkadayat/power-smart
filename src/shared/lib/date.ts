@@ -17,3 +17,13 @@ export const osloDateString = (date: Date = new Date()): string => {
   const { year, month, day } = formatOsloDate(date);
   return `${year}-${month}-${day}`;
 };
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export const osloTomorrowDateString = (date: Date = new Date()): string =>
+  osloDateString(new Date(date.getTime() + DAY_MS));
+
+// Extract HH:mm from an ISO timestamp string like "2026-05-20T14:00:00+02:00".
+// The upstream API returns timestamps already in the Norwegian local offset, so
+// slicing is safe and avoids a timezone round-trip.
+export const formatHourFromIso = (iso: string): string => iso.slice(11, 16);

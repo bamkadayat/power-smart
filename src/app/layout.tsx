@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { Footer } from "@/shared/components/Footer";
-import { Header } from "@/shared/components/Header";
+
+import { Header } from "./_components/Header";
 
 import "./globals.css";
 
@@ -23,11 +24,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-8 sm:py-12">
+        <main id="main-content" className="flex-1">
           {children}
         </main>
         <Footer />

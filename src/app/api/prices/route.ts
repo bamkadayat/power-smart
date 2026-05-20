@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { getPricesForArea, PricesUnavailableError } from "@/features/prices";
+import {
+  getPricesForArea,
+  PricesUnavailableError,
+} from "@/features/prices/server";
 import { isPriceArea } from "@/shared/lib/areas";
 import { formatOsloDate } from "@/shared/lib/date";
 

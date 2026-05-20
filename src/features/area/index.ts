@@ -8,4 +8,5 @@ export {
 export { useSelectedArea } from "./client/useSelectedArea";
 export { useGeolocation, type GeolocationState } from "./client/useGeolocation";
 export { AreaPicker } from "./components/AreaPicker";
+export { AreaPill } from "./components/AreaPill";
 export type { AreaMeta } from "./types";
