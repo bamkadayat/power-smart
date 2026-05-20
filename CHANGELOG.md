@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/bamkadayat/power-smart/compare/v1.5.0...v1.6.0) (2026-05-20)
+
+
+### Features
+
+* enhance Header and add MobileNav component for improved navigation ([2b27564](https://github.com/bamkadayat/power-smart/commit/2b275648a80432a3d49c650e25e8114bf2df2841))
+
 # [1.5.0](https://github.com/bamkadayat/power-smart/compare/v1.4.0...v1.5.0) (2026-05-20)
 
 
