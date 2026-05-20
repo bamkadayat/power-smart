@@ -55,7 +55,7 @@ export const AreaPicker = () => {
       <p
         role="status"
         aria-live="polite"
-        className="min-h-[1.25rem] text-sm text-muted-foreground"
+        className="min-h-5 text-sm text-muted-foreground"
       >
         {message}
       </p>
