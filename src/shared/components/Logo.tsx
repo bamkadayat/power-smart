@@ -8,7 +8,7 @@ export const Logo = ({ className }: Props) => (
   <span
     aria-hidden="true"
     className={cn(
-      "inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-navy text-brand-mint",
+      "inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brand-navy text-brand-mint dark:bg-brand-mint dark:text-brand-navy",
       className,
     )}
   >
