@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/bamkadayat/power-smart/compare/v1.6.0...v1.6.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* adjust layout styles for improved responsiveness and user interaction ([756e33b](https://github.com/bamkadayat/power-smart/commit/756e33b2af0ae47e980294bf5ba323bd19845221))
+* update title for clarity in RootLayout component ([e4f381b](https://github.com/bamkadayat/power-smart/commit/e4f381b167464b48a7fc9d7b09e28dee6b7009ae))
+
 # [1.6.0](https://github.com/bamkadayat/power-smart/compare/v1.5.0...v1.6.0) (2026-05-20)
 
 
