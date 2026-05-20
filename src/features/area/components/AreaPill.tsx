@@ -11,12 +11,12 @@ export const AreaPill = () => {
   return (
     <a
       href="#area"
-      className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 text-base font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <span
         aria-hidden="true"
         className={cn(
-          "h-1.5 w-1.5 rounded-full",
+          "h-2 w-2 rounded-full",
           active ? "bg-accent" : "bg-muted-foreground",
         )}
       />

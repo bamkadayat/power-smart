@@ -80,8 +80,20 @@ export const PriceChart = ({ prices, now = new Date(), className }: Props) => {
               key={p.time_start}
               role="listitem"
               aria-label={label}
-              className="flex h-full flex-1 flex-col items-center justify-end gap-1"
+              tabIndex={0}
+              className="group relative flex h-full flex-1 flex-col items-center justify-end gap-1 focus:outline-none"
             >
+              <div
+                role="tooltip"
+                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs shadow-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
+              >
+                <div className="font-semibold tabular-nums text-foreground">
+                  {formatPrice(p.NOK_per_kWh)}
+                </div>
+                <div className="tabular-nums text-muted-foreground">
+                  {hour}
+                </div>
+              </div>
               <span
                 aria-hidden="true"
                 className="text-xs font-semibold leading-none text-muted-foreground"
@@ -90,7 +102,7 @@ export const PriceChart = ({ prices, now = new Date(), className }: Props) => {
               </span>
               <div
                 className={cn(
-                  "bar-grow w-full rounded-t transition-all duration-500 ease-out",
+                  "bar-grow w-full rounded-t transition-all duration-500 ease-out group-hover:brightness-110",
                   BAR_BG[kind],
                   isCurrent &&
                     "outline outline-2 outline-offset-1 outline-foreground",
