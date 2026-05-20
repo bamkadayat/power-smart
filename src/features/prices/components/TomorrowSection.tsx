@@ -1,9 +1,14 @@
 "use client";
 
-import { findCheapestWindow } from "@/shared/lib/findCheapestWindow";
-import { formatHourFromIso, osloTomorrowDateString } from "@/shared/lib/date";
-import { formatPrice } from "@/shared/lib/price";
+import { useState } from "react";
+
+import { ErrorCard } from "@/shared/components/ErrorCard";
+import { SectionHeader } from "@/shared/components/SectionHeader";
 import type { PriceArea } from "@/shared/lib/areas";
+import { formatHourFromIso, osloTomorrowDateString } from "@/shared/lib/date";
+import { findCheapestWindow } from "@/shared/lib/findCheapestWindow";
+import { formatPrice } from "@/shared/lib/price";
+import { cn } from "@/shared/lib/cn";
 
 import { usePrices } from "../client/usePrices";
 import { getAveragePrice } from "../lib/getAveragePrice";
@@ -18,48 +23,62 @@ type Props = {
   todayPrices?: ElectricityPrice[];
 };
 
-const SectionHeader = () => (
-  <header className="flex items-baseline justify-between gap-4">
-    <div>
-      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        Forecast
-      </p>
-      <h2 className="text-2xl font-bold tracking-tight">Tomorrow</h2>
-    </div>
-    <p className="text-xs text-muted-foreground">
-      published 13:00 CET · Nord Pool
-    </p>
-  </header>
-);
-
-const FallbackMessage = ({ children }: { children: React.ReactNode }) => (
-  <div className="space-y-4">
-    <SectionHeader />
-    <div className="rounded-lg border border-border bg-card p-6">
-      <p className="text-sm text-muted-foreground">{children}</p>
-    </div>
-  </div>
+const TomorrowHeader = () => (
+  <SectionHeader
+    label="Forecast"
+    title="Tomorrow"
+    titleId="tomorrow-heading"
+    meta="published 13:00 CET · Nord Pool"
+  />
 );
 
 export const TomorrowSection = ({ area, todayPrices }: Props) => {
   const tomorrow = osloTomorrowDateString();
-  const prices = usePrices(area, tomorrow);
+  const { state, refetch } = usePrices(area, tomorrow);
 
-  if (prices.status === "loading") {
-    return <FallbackMessage>Checking tomorrow&apos;s prices…</FallbackMessage>;
+  const [stablePrices, setStablePrices] = useState<ElectricityPrice[] | null>(
+    null,
+  );
+  if (state.status === "success" && state.prices !== stablePrices) {
+    setStablePrices(state.prices);
   }
-  if (prices.status === "error" || prices.status === "idle") {
+
+  const displayPrices =
+    state.status === "success" ? state.prices : stablePrices;
+  const isRefetching = state.status === "loading" && !!displayPrices;
+  const isInitialLoading = state.status === "loading" && !displayPrices;
+
+  if (isInitialLoading) {
     return (
-      <FallbackMessage>
-        Tomorrow&apos;s prices are normally available after 13:00 Europe/Oslo.
-      </FallbackMessage>
+      <div className="space-y-4">
+        <TomorrowHeader />
+        <div className="rounded-lg border border-border bg-card p-6">
+          <p className="text-sm text-muted-foreground">
+            Checking tomorrow&apos;s prices…
+          </p>
+        </div>
+      </div>
     );
   }
 
-  const tomorrowPrices = prices.prices;
-  const avgTomorrow = getAveragePrice(tomorrowPrices);
-  const cheapest3h = findCheapestWindow(tomorrowPrices, 3);
-  const peak = getMostExpensiveHour(tomorrowPrices);
+  if ((state.status === "error" || state.status === "idle") && !displayPrices) {
+    return (
+      <div className="space-y-4">
+        <TomorrowHeader />
+        <ErrorCard
+          title="Tomorrow's prices not yet available"
+          message="Day-ahead prices are normally published around 13:00 Europe/Oslo. Check back then."
+          onRetry={refetch}
+        />
+      </div>
+    );
+  }
+
+  if (!displayPrices) return null;
+
+  const avgTomorrow = getAveragePrice(displayPrices);
+  const cheapest3h = findCheapestWindow(displayPrices, 3);
+  const peak = getMostExpensiveHour(displayPrices);
 
   const avgToday = todayPrices ? getAveragePrice(todayPrices) : null;
   const pctChange =
@@ -68,8 +87,13 @@ export const TomorrowSection = ({ area, todayPrices }: Props) => {
       : null;
 
   return (
-    <div className="space-y-4">
-      <SectionHeader />
+    <div
+      className={cn(
+        "space-y-4 transition-opacity duration-300",
+        isRefetching && "opacity-60",
+      )}
+    >
+      <TomorrowHeader />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-lg border border-border bg-card p-6 lg:col-span-2">
@@ -93,7 +117,7 @@ export const TomorrowSection = ({ area, todayPrices }: Props) => {
             )}
           </div>
           <div className="mt-4">
-            <PriceChart prices={tomorrowPrices} />
+            <PriceChart prices={displayPrices} />
           </div>
         </div>
 

@@ -7,6 +7,7 @@ import type { ElectricityPrice } from "../types";
 type Props = {
   prices: ElectricityPrice[];
   now?: Date;
+  className?: string;
 };
 
 type BarKind = "cheap" | "expensive" | "normal";
@@ -31,7 +32,7 @@ const quartile = (sorted: number[], q: number): number => {
   return sorted[index];
 };
 
-export const PriceChart = ({ prices, now = new Date() }: Props) => {
+export const PriceChart = ({ prices, now = new Date(), className }: Props) => {
   if (prices.length === 0) return null;
 
   const values = prices.map((p) => p.NOK_per_kWh);
@@ -44,13 +45,16 @@ export const PriceChart = ({ prices, now = new Date() }: Props) => {
   const nowMs = now.getTime();
 
   return (
-    <figure aria-label="Hourly electricity prices">
+    <figure
+      aria-label="Hourly electricity prices"
+      className={cn("transition-opacity duration-300", className)}
+    >
       <figcaption className="sr-only">
         Bar chart of hourly spot prices. Cheap hours are highlighted in mint,
         peak hours in dark navy.
       </figcaption>
       <div className="flex h-40 items-end gap-[2px] sm:gap-1" role="list">
-        {prices.map((p) => {
+        {prices.map((p, index) => {
           const kind: BarKind =
             p.NOK_per_kWh <= lowCut
               ? "cheap"
@@ -86,12 +90,15 @@ export const PriceChart = ({ prices, now = new Date() }: Props) => {
               </span>
               <div
                 className={cn(
-                  "w-full rounded-t transition-colors",
+                  "bar-grow w-full rounded-t transition-all duration-500 ease-out",
                   BAR_BG[kind],
                   isCurrent &&
                     "outline outline-2 outline-offset-1 outline-foreground",
                 )}
-                style={{ height: `${(p.NOK_per_kWh / max) * 100}%` }}
+                style={{
+                  height: `${(p.NOK_per_kWh / max) * 100}%`,
+                  animationDelay: `${index * 20}ms`,
+                }}
               />
             </div>
           );

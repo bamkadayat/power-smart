@@ -27,3 +27,11 @@ export const osloTomorrowDateString = (date: Date = new Date()): string =>
 // The upstream API returns timestamps already in the Norwegian local offset, so
 // slicing is safe and avoids a timezone round-trip.
 export const formatHourFromIso = (iso: string): string => iso.slice(11, 16);
+
+export const formatOsloDateLong = (date: Date = new Date()): string =>
+  new Intl.DateTimeFormat("en-GB", {
+    timeZone: OSLO_TZ,
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  }).format(date);

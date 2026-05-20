@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   formatHourFromIso,
   formatOsloDate,
+  formatOsloDateLong,
   osloDateString,
   osloTomorrowDateString,
 } from "./date";
@@ -44,5 +45,15 @@ describe("formatHourFromIso", () => {
   it("extracts HH:mm from a full ISO timestamp", () => {
     expect(formatHourFromIso("2026-05-20T14:00:00+02:00")).toBe("14:00");
     expect(formatHourFromIso("2026-05-20T00:00:00+02:00")).toBe("00:00");
+  });
+});
+
+describe("formatOsloDateLong", () => {
+  it("includes weekday, day, and month for a known date in Europe/Oslo", () => {
+    // 2026-05-20T10:00:00Z = Wed 12:00 CEST in Oslo
+    const result = formatOsloDateLong(new Date("2026-05-20T10:00:00Z"));
+    expect(result).toMatch(/Wed/);
+    expect(result).toMatch(/20/);
+    expect(result).toMatch(/May/);
   });
 });

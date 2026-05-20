@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { PriceArea } from "@/shared/lib/areas";
 
@@ -12,6 +12,11 @@ export type PricesState =
   | { status: "success"; prices: ElectricityPrice[] }
   | { status: "error"; message: string };
 
+export type UsePricesResult = {
+  state: PricesState;
+  refetch: () => void;
+};
+
 type ApiResponse =
   | { area: PriceArea; date: string; prices: ElectricityPrice[] }
   | { error: string };
@@ -19,8 +24,9 @@ type ApiResponse =
 export const usePrices = (
   area: PriceArea | null,
   date?: string,
-): PricesState => {
+): UsePricesResult => {
   const [state, setState] = useState<PricesState>({ status: "loading" });
+  const [nonce, setNonce] = useState(0);
 
   useEffect(() => {
     if (!area) return;
@@ -59,8 +65,10 @@ export const usePrices = (
       active = false;
       controller.abort();
     };
-  }, [area, date]);
+  }, [area, date, nonce]);
 
-  if (!area) return { status: "idle" };
-  return state;
+  const refetch = useCallback(() => setNonce((n) => n + 1), []);
+
+  if (!area) return { state: { status: "idle" }, refetch };
+  return { state, refetch };
 };

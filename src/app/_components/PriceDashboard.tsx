@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { AREA_META, AreaPicker, useSelectedArea } from "@/features/area";
 import {
   PriceChart,
@@ -8,19 +10,42 @@ import {
   PriceSummarySkeleton,
   TomorrowSection,
   usePrices,
+  type ElectricityPrice,
 } from "@/features/prices";
 import {
   RecommendationCards,
   RecommendationCardsSkeleton,
 } from "@/features/recommendations";
+import { ErrorCard } from "@/shared/components/ErrorCard";
+import { SectionHeader } from "@/shared/components/SectionHeader";
+import { formatOsloDateLong } from "@/shared/lib/date";
 
 export const PriceDashboard = () => {
   const { area } = useSelectedArea();
-  const today = usePrices(area);
+  const { state: today, refetch: refetchToday } = usePrices(area);
 
-  const showSkeleton = area && today.status === "loading";
-  const showData = area && today.status === "success";
+  // Keep the last successful prices visible during a refetch so the chart
+  // smoothly morphs into new values rather than flashing a skeleton.
+  // (React 19 pattern: setState during render is idempotent and discarded
+  // before commit if it doesn't change the value.)
+  const [stableTodayPrices, setStableTodayPrices] =
+    useState<ElectricityPrice[] | null>(null);
+  if (
+    today.status === "success" &&
+    today.prices !== stableTodayPrices
+  ) {
+    setStableTodayPrices(today.prices);
+  }
+
+  const displayPrices =
+    today.status === "success" ? today.prices : stableTodayPrices;
+
   const showError = area && today.status === "error";
+  const showInitialLoading =
+    area && today.status === "loading" && !displayPrices;
+  const isRefetching =
+    area && today.status === "loading" && !!displayPrices;
+  const showData = area && !showError && !!displayPrices;
 
   return (
     <div className="space-y-10">
@@ -40,23 +65,33 @@ export const PriceDashboard = () => {
       )}
 
       {showError && (
-        <p className="text-sm text-foreground">{today.message}</p>
+        <ErrorCard
+          title="Couldn't load prices"
+          message={today.message}
+          onRetry={refetchToday}
+        />
       )}
 
-      {area && (showSkeleton || showData) && (
+      {(showInitialLoading || showData) && area && (
         <>
           <section
             id="today"
             aria-labelledby="today-heading"
             className="space-y-4 scroll-mt-20"
           >
-            <h2 id="today-heading" className="text-xl font-semibold">
-              Today — {AREA_META[area].code} {AREA_META[area].city}
-            </h2>
+            <SectionHeader
+              label="Today"
+              title={`${AREA_META[area].code} · ${AREA_META[area].city}`}
+              titleId="today-heading"
+              meta={formatOsloDateLong()}
+            />
             {showData ? (
               <>
-                <PriceSummary prices={today.prices} />
-                <PriceChart prices={today.prices} />
+                <PriceSummary prices={displayPrices} />
+                <PriceChart
+                  prices={displayPrices}
+                  className={isRefetching ? "opacity-60" : undefined}
+                />
               </>
             ) : (
               <>
@@ -66,12 +101,25 @@ export const PriceDashboard = () => {
             )}
           </section>
 
-          <section aria-labelledby="recs-heading" className="space-y-4">
-            <h2 id="recs-heading" className="text-xl font-semibold">
-              Recommended times
-            </h2>
+          <section
+            aria-labelledby="recs-heading"
+            className="space-y-4"
+          >
+            <SectionHeader
+              label="Recommendations"
+              title="Run heavy loads here"
+              titleId="recs-heading"
+            />
             {showData ? (
-              <RecommendationCards prices={today.prices} />
+              <div
+                className={
+                  isRefetching
+                    ? "opacity-60 transition-opacity duration-300"
+                    : "transition-opacity duration-300"
+                }
+              >
+                <RecommendationCards prices={displayPrices} />
+              </div>
             ) : (
               <RecommendationCardsSkeleton />
             )}
@@ -80,7 +128,7 @@ export const PriceDashboard = () => {
           <section id="tomorrow" className="scroll-mt-20">
             <TomorrowSection
               area={area}
-              todayPrices={showData ? today.prices : undefined}
+              todayPrices={showData ? displayPrices : undefined}
             />
           </section>
         </>
