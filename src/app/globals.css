@@ -37,13 +37,13 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--brand-navy);
-    --foreground: var(--brand-cyan);
+    --foreground: #ffffff;
     --card: color-mix(in srgb, var(--brand-navy) 85%, #ffffff);
-    --card-foreground: var(--brand-cyan);
+    --card-foreground: #ffffff;
     --popover: color-mix(in srgb, var(--brand-navy) 85%, #ffffff);
-    --popover-foreground: var(--brand-cyan);
+    --popover-foreground: #ffffff;
     --muted: color-mix(in srgb, var(--brand-navy) 80%, var(--brand-teal));
-    --muted-foreground: var(--brand-cyan);
+    --muted-foreground: color-mix(in srgb, #ffffff 75%, transparent);
     --primary: var(--brand-mint);
     --primary-foreground: var(--brand-navy);
     --secondary: var(--brand-teal);
