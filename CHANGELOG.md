@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/bamkadayat/power-smart/compare/v1.2.0...v1.3.0) (2026-05-20)
+
+
+### Features
+
+* add About page with detailed information on pricing and privacy, include HowItWorks component ([27f03d3](https://github.com/bamkadayat/power-smart/commit/27f03d3e3c736512470ca42b0c688d7376f155ec))
+* build home dashboard, tomorrow card, and how-it-works ([19beb77](https://github.com/bamkadayat/power-smart/commit/19beb77206d9aba1b9125380d2df6ac5a97c3523))
+* enhance header with logo and area picker, add HowItWorks component ([b269bcd](https://github.com/bamkadayat/power-smart/commit/b269bcd6cea49f9e57440c25896248add300135b))
+
 # [1.2.0](https://github.com/bamkadayat/power-smart/compare/v1.1.0...v1.2.0) (2026-05-20)
 
 
