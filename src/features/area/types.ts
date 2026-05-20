@@ -5,8 +5,3 @@ export type AreaMeta = {
   city: string;
   region: string;
 };
-
-export type AreaDetection = {
-  area: PriceArea;
-  confidence: "high" | "low";
-};
