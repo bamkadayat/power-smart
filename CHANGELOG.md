@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/bamkadayat/power-smart/compare/v1.6.1...v1.6.2) (2026-05-20)
+
+
+### Bug Fixes
+
+* update dark mode styles for foreground and card elements in globals.css ([50d9cd5](https://github.com/bamkadayat/power-smart/commit/50d9cd5c1bcb32896286ba350327187085142426))
+
 ## [1.6.1](https://github.com/bamkadayat/power-smart/compare/v1.6.0...v1.6.1) (2026-05-20)
 
 
