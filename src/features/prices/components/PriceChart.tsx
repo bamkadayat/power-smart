@@ -81,11 +81,11 @@ export const PriceChart = ({ prices, now = new Date(), className }: Props) => {
               role="listitem"
               aria-label={label}
               tabIndex={0}
-              className="group relative flex h-full flex-1 flex-col items-center justify-end gap-1 focus:outline-none"
+              className="group relative flex h-full flex-1 cursor-pointer flex-col items-center justify-end gap-1 focus:outline-none"
             >
               <div
                 role="tooltip"
-                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs shadow-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
+                className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-card px-2 py-1 text-xs shadow-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus:opacity-100"
               >
                 <div className="font-semibold tabular-nums text-foreground">
                   {formatPrice(p.NOK_per_kWh)}
