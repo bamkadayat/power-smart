@@ -40,16 +40,16 @@ export const AreaPicker = () => {
 
   return (
     <section className="space-y-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
         <LocationButton
           onClick={handleLocate}
           state={geoState}
-          className="sm:w-auto"
+          className="w-full sm:w-auto"
         />
         <AreaSelector
           value={area}
           onChange={setArea}
-          className="sm:flex-1"
+          className="w-full sm:max-w-sm"
         />
       </div>
       <p

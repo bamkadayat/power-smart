@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { Footer } from "@/shared/components/Footer";
+import { getSiteUrl } from "@/shared/config/siteUrl";
 
 import { Header } from "./_components/Header";
 
@@ -12,10 +13,26 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const TITLE = "PowerSmart — Cheapest electricity hours in Norway";
+const DESCRIPTION =
+  "Find the cheapest electricity hours in your Norwegian price area (NO1–NO5). Hourly spot prices, smart appliance windows.";
+
 export const metadata: Metadata = {
-  title: "PowerSmart — Cheapest electricity hours in Norway",
-  description:
-    "Find the cheapest electricity hours in your Norwegian price area (NO1–NO5).",
+  metadataBase: new URL(getSiteUrl()),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: "PowerSmart",
+    type: "website",
+    locale: "en_NO",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
