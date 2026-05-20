@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/bamkadayat/power-smart/compare/v1.3.0...v1.4.0) (2026-05-20)
+
+
+### Bug Fixes
+
+* adjust minimum height for status message in AreaPicker component ([fa28a3d](https://github.com/bamkadayat/power-smart/commit/fa28a3d4a387881c471e3cd6ee95db1c18f76ade))
+
+
+### Features
+
+* update AreaSelector class for responsive layout ([c06cee6](https://github.com/bamkadayat/power-smart/commit/c06cee64d648032c57634f766e0d26e664851933))
+* update README and enhance layout with metadata, error handling, and site configuration ([db82f6d](https://github.com/bamkadayat/power-smart/commit/db82f6d6f6be86dd20e3b19666b24760e1da7d67))
+
 # [1.3.0](https://github.com/bamkadayat/power-smart/compare/v1.2.0...v1.3.0) (2026-05-20)
 
 
