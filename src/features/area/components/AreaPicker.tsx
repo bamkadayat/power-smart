@@ -5,17 +5,25 @@ import { useEffect } from "react";
 import { useGeolocation, type GeolocationState } from "../client/useGeolocation";
 import { useSelectedArea } from "../client/useSelectedArea";
 import { AREA_META } from "../lib/areaMeta";
+import type { PriceArea } from "@/shared/lib/areas";
 
 import { AreaSelector } from "./AreaSelector";
 import { LocationButton } from "./LocationButton";
 
-const buildStatusMessage = (state: GeolocationState): string | null => {
+const buildStatusMessage = (
+  state: GeolocationState,
+  selectedArea: PriceArea | null,
+): string | null => {
   switch (state.status) {
     case "idle":
     case "loading":
       return null;
     case "success":
       if (state.area) {
+        // Only surface the detection message while the user's selection still
+        // matches what we detected. Once they pick a different area from the
+        // dropdown, the message is stale and misleading.
+        if (selectedArea !== state.area) return null;
         const meta = AREA_META[state.area];
         return `We detected ${meta.code} / ${meta.region}. Please change manually if this is wrong.`;
       }
@@ -55,7 +63,7 @@ export const AreaPicker = () => {
     if (detected) setArea(detected);
   };
 
-  const message = buildStatusMessage(geoState);
+  const message = buildStatusMessage(geoState, area);
 
   return (
     <section className="space-y-3">

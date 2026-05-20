@@ -41,7 +41,7 @@ export const LocationButton = ({ onClick, state, className }: Props) => {
       onClick={onClick}
       disabled={loading}
       aria-busy={loading}
-      className={cn("h-11", className)}
+      className={cn("h-11 cursor-pointer disabled:cursor-not-allowed", className)}
     >
       {loading ? <Spinner /> : <LocationPin />}
       {loading ? "Detecting your area…" : "Use my location"}
