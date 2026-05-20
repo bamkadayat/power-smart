@@ -13,7 +13,7 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const TITLE = "PowerSmart — Cheapest electricity hours in Norway";
+const TITLE = "Find the cheapest electricity hours in Norway";
 const DESCRIPTION =
   "Find the cheapest electricity hours in your Norwegian price area (NO1–NO5). Hourly spot prices, smart appliance windows.";
 
